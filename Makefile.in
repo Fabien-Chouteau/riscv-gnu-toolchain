@@ -178,7 +178,7 @@ stamps/build-gcc-linux-stage2: $(srcdir)/riscv-gcc $(addprefix stamps/build-glib
 		--with-system-zlib \
 		--enable-shared \
 		--enable-tls \
-		--enable-languages=c,c++,fortran \
+		--enable-languages=c,c++,fortran,ada \
 		--disable-libmudflap \
 		--disable-libssp \
 		--disable-libquadmath \
@@ -223,7 +223,7 @@ stamps/build-gcc-newlib: src/newlib-gcc stamps/build-binutils-newlib
 		--without-headers \
 		--disable-shared \
 		--disable-threads \
-		--enable-languages=c,c++ \
+		--enable-languages=c,c++,ada \
 		--with-system-zlib \
 		--enable-tls \
 		--with-newlib \
@@ -232,11 +232,14 @@ stamps/build-gcc-newlib: src/newlib-gcc stamps/build-binutils-newlib
 		--disable-libquadmath \
 		--disable-libgomp \
 		--disable-nls \
+		--disable-libada \
 		$(GCC_CHECKING_FLAGS) \
 		$(MULTILIB_FLAGS) \
 		$(WITH_ABI) \
 		$(WITH_ARCH)
 	$(MAKE) -C $(notdir $@) inhibit-libc=true
+	$(MAKE) -C $(notdir $@)/gcc cross-gnattools
+	$(MAKE) -C $(notdir $@)/gcc ada.all.cross
 	$(MAKE) -C $(notdir $@) install
 	$(if $(findstring enable,$(MULTILIB_FLAGS)),rm -f $(INSTALL_DIR)/riscv$(XLEN)-unknown-elf/lib/*.*,)
 	mkdir -p $(dir $@) && touch $@

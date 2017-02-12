@@ -7,6 +7,10 @@ AC_PROG_GREP
 AC_PATH_PROG([BASH], [bash],
 	[AC_MSG_ERROR([bash not found])])
 
+AC_PATH_PROG([GNAT], [gnat], [no])
+AS_IF([test x"$GNAT" != no],
+	[AC_MSG_ERROR([GNAT compiler not found. (sudo apt-get install gnat)])])
+
 AC_PATH_PROGS_FEATURE_CHECK([GAWK], [gawk awk],
 	[AS_IF([$ac_path_GAWK --version 2>&1 | $FGREP GNU >/dev/null],
 		[ac_cv_path_GAWK=$ac_path_GAWK ac_path_GAWK_found=:])],
